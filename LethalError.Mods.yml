@@ -1,0 +1,515 @@
+Mods:
+  - ModName: LethalCasino
+    Prefabs:
+      - PrefabName: SmokingPipe
+        Hash: 71084013
+        Nullable: false
+      - PrefabName: SlotMachine
+        Hash: 962643930
+        Nullable: false
+      - PrefabName: Roulette
+        Hash: 1274926403
+        Nullable: false
+      - PrefabName: Blackjack
+        Hash: 1433479014
+        Nullable: false
+      - PrefabName: Beer
+        Hash: 1554478374
+        Nullable: false
+      - PrefabName: Jukebox
+        Hash: 2420867341
+        Nullable: false
+      - PrefabName: CasinoBuilding
+        Hash: 2539875558
+        Nullable: false
+      - PrefabName: ATM
+        Hash: 3530277622
+        Nullable: false
+      - PrefabName: TheWheel
+        Hash: 4039072360
+        Nullable: false
+      - PrefabName: ChipBag
+        Hash: 4155694671
+        Nullable: false
+  - ModName: OpenBodyCams
+    Prefabs:
+      - PrefabName: BodyCamAntenna
+        Hash: 4182390809
+        Nullable: false
+  - ModName: Lategame Upgrades
+    Prefabs:
+      - PrefabName: candelabra
+        Hash: 49314869
+        Nullable: false
+      - PrefabName: BiggerLungs
+        Hash: 51255918
+        Nullable: false
+      - PrefabName: destructiveCodes
+        Hash: 80463842
+        Nullable: false
+      - PrefabName: walkieUpgrade
+        Hash: 85742492
+        Nullable: false
+      - PrefabName: FedoraSuit
+        Hash: 113258202
+        Nullable: false
+      - PrefabName: Medical Nanobots
+        Hash: 153725323
+        Nullable: false
+      - PrefabName: Bomb
+        Hash: 157093853
+        Nullable: false
+      - PrefabName: Bracken Sample
+        Hash: 169349488
+        Nullable: false
+      - PrefabName: MedKit
+        Hash: 210005566
+        Nullable: false
+      - PrefabName: Spore Lizard Sample
+        Hash: 262145383
+        Nullable: false
+      - PrefabName: Carbon Kneejoints
+        Hash: 274242626
+        Nullable: false
+      - PrefabName: ExorcLoot
+        Hash: 347439963
+        Nullable: false
+      - PrefabName: PlayerHealth
+        Hash: 377291513
+        Nullable: false
+      - PrefabName: Silver Bullets
+        Hash: 390886794
+        Nullable: false
+      - PrefabName: EfficientEngines
+        Hash: 407596008
+        Nullable: false
+      - PrefabName: LightningRod
+        Hash: 408777177
+        Nullable: false
+      - PrefabName: BargainConnections
+        Hash: 486057223
+        Nullable: false
+      - PrefabName: Scrap Keeper
+        Hash: 538285865
+        Nullable: false
+      - PrefabName: ChargingBooster
+        Hash: 590806901
+        Nullable: false
+      - PrefabName: Oxygen Canisters
+        Hash: 604577331
+        Nullable: false
+      - PrefabName: Thumper Sample
+        Hash: 735401615
+        Nullable: false
+      - PrefabName: ScavExtract
+        Hash: 803276749
+        Nullable: false
+      - PrefabName: Jetpack Thrusters
+        Hash: 854243056
+        Nullable: false
+      - PrefabName: strongLegs
+        Hash: 862166518
+        Nullable: false
+      - PrefabName: MarketInfluence
+        Hash: 1055544201
+        Nullable: false
+      - PrefabName: ReinforcedBoots
+        Hash: 1078910897
+        Nullable: false
+      - PrefabName: Jet Fuel
+        Hash: 1083656336
+        Nullable: false
+      - PrefabName: Bones
+        Hash: 1093560347
+        Nullable: false
+      - PrefabName: Pager
+        Hash: 1104592062
+        Nullable: false
+      - PrefabName: nightVision
+        Hash: 1228559766
+        Nullable: false
+      - PrefabName: Particle Infuser
+        Hash: 1289276175
+        Nullable: false
+      - PrefabName: beekeeper
+        Hash: 1387844539
+        Nullable: false
+      - PrefabName: exoskeleton
+        Hash: 1460674519
+        Nullable: false
+      - PrefabName: runningShoes
+        Hash: 1467619257
+        Nullable: false
+      - PrefabName: Hoarding Bug Sample
+        Hash: 1485765361
+        Nullable: false
+      - PrefabName: Life Insurance
+        Hash: 1813842149
+        Nullable: false
+      - PrefabName: Disc
+        Hash: 1840980479
+        Nullable: false
+      - PrefabName: Bunker Spider Sample
+        Hash: 1852030217
+        Nullable: false
+      - PrefabName: EggLoot
+        Hash: 1854181908
+        Nullable: false
+      - PrefabName: MedKitMap
+        Hash: 1866537482
+        Nullable: false
+      - PrefabName: Teddy Bear
+        Hash: 1909365460
+        Nullable: false
+      - PrefabName: Heart
+        Hash: 1957384949
+        Nullable: false
+      - PrefabName: DeeperPockets
+        Hash: 2031900359
+        Nullable: false
+      - PrefabName: LandingThrusters
+        Hash: 2100802230
+        Nullable: false
+      - PrefabName: ProteinPowder
+        Hash: 2159233034
+        Nullable: false
+      - PrefabName: AluminiumCoils
+        Hash: 2172901270
+        Nullable: false
+      - PrefabName: Tulip Snake Sample
+        Hash: 2222557041
+        Nullable: false
+      - PrefabName: ConfigSyncHolder
+        Hash: 2258435833
+        Nullable: false
+      - PrefabName: HikingBoots
+        Hash: 2258487553
+        Nullable: false
+      - PrefabName: Snare Flea Sample
+        Hash: 2276166001
+        Nullable: false
+      - PrefabName: ScavengerInstincts
+        Hash: 2334615017
+        Nullable: false
+      - PrefabName: MechanicalArms
+        Hash: 2436186433
+        Nullable: false
+      - PrefabName: Fusion Matter
+        Hash: 2440002440
+        Nullable: false
+      - PrefabName: DataPC
+        Hash: 2509686350
+        Nullable: false
+      - PrefabName: Long Barrel
+        Hash: 2567323647
+        Nullable: false
+      - PrefabName: Hunter
+        Hash: 2706592864
+        Nullable: false
+      - PrefabName: Hollow Point
+        Hash: 2837059559
+        Nullable: false
+      - PrefabName: LethalDeals
+        Hash: 2851308622
+        Nullable: false
+      - PrefabName: terminalFlash
+        Hash: 2884133127
+        Nullable: false
+      - PrefabName: Manticoil Sample
+        Hash: 2893114612
+        Nullable: false
+      - PrefabName: HoardingBugEggs
+        Hash: 2962178718
+        Nullable: false
+      - PrefabName: Maneater Sample
+        Hash: 2972049550
+        Nullable: false
+      - PrefabName: LGUStore
+        Hash: 3019038553
+        Nullable: false
+      - PrefabName: Rubber Boots
+        Hash: 3025749745
+        Nullable: false
+      - PrefabName: LithiumBatteries
+        Hash: 3121397996
+        Nullable: false
+      - PrefabName: Sigurd
+        Hash: 3153547264
+        Nullable: false
+      - PrefabName: Kidnapper Fox Sample
+        Hash: 3325713814
+        Nullable: false
+      - PrefabName: Crucifix
+        Hash: 3365062415
+        Nullable: false
+      - PrefabName: Midas Touch
+        Hash: 3382218916
+        Nullable: false
+      - PrefabName: Pentagram
+        Hash: 3388686820
+        Nullable: false
+      - PrefabName: Effective Bandaids
+        Hash: 3434284969
+        Nullable: false
+      - PrefabName: Intern
+        Hash: 3492274885
+        Nullable: false
+      - PrefabName: ClayGlasses
+        Hash: 3523178958
+        Nullable: false
+      - PrefabName: gogglesPrefab
+        Hash: 3554477704
+        Nullable: false
+      - PrefabName: ClimbingGloves
+        Hash: 3580151098
+        Nullable: false
+      - PrefabName: FasterDropPod
+        Hash: 3678239054
+        Nullable: false
+      - PrefabName: SickBeats
+        Hash: 3787087495
+        Nullable: false
+      - PrefabName: strongScanner
+        Hash: 3832561472
+        Nullable: false
+      - PrefabName: WeedGeneticManipulation
+        Hash: 3899340458
+        Nullable: false
+      - PrefabName: Quick Hands
+        Hash: 3899636605
+        Nullable: false
+      - PrefabName: SleightOfHand
+        Hash: 3967567463
+        Nullable: false
+      - PrefabName: TractionBoots
+        Hash: 3974396423
+        Nullable: false
+      - PrefabName: Eyeless Dog Sample
+        Hash: 4021731023
+        Nullable: false
+      - PrefabName: DoorsHydraulicsBattery
+        Hash: 4057467679
+        Nullable: false
+      - PrefabName: LockSmith
+        Hash: 4109926951
+        Nullable: false
+      - PrefabName: BodyCamAntenna
+        Hash: 4182390809
+        Nullable: false
+      - PrefabName: Baboon Hawk Sample
+        Hash: 4271059327
+        Nullable: false
+      - PrefabName: QuantumDisruptor
+        Hash: 4278433801
+        Nullable: false
+      - PrefabName: Forest Keeper Sample
+        Hash: 4279979268
+        Nullable: false
+  - ModName: LethalLevelLoader
+    Prefabs:
+      - PrefabName: LethalLevelLoaderNetworkManagerTest
+        Hash: 1516983066
+        Nullable: false
+      - PrefabName: NetworkBundleManager
+        Hash: 2778167162
+        Nullable: false
+  - ModName: LethalThings
+    Prefabs:
+      - PrefabName: Dingus
+        Hash: 286355263
+        Nullable: false
+      - PrefabName: glizzy
+        Hash: 332875641
+        Nullable: false
+      - PrefabName: HamisPlush
+        Hash: 489417335
+        Nullable: false
+      - PrefabName: DevMenu
+        Hash: 539769414
+        Nullable: false
+      - PrefabName: ToimariPlush
+        Hash: 640790506
+        Nullable: false
+      - PrefabName: Toygun
+        Hash: 739436206
+        Nullable: false
+      - PrefabName: ArsonPlush
+        Hash: 775682352
+        Nullable: false
+      - PrefabName: HandheldRadar
+        Hash: 874474872
+        Nullable: false
+      - PrefabName: Maggie
+        Hash: 1122501858
+        Nullable: false
+      - PrefabName: MissilePrefab
+        Hash: 1134882085
+        Nullable: false
+      - PrefabName: TeleporterTrap
+        Hash: 1175790430
+        Nullable: false
+      - PrefabName: Dart
+        Hash: 1183996688
+        Nullable: false
+      - PrefabName: GremlinEnergy
+        Hash: 1466035990
+        Nullable: false
+      - PrefabName: ArsonPlushDirty
+        Hash: 1743528346
+        Nullable: false
+      - PrefabName: LTNetworkConfig
+        Hash: 1846884965
+        Nullable: false
+      - PrefabName: Dartboard
+        Hash: 2053941315
+        Nullable: false
+      - PrefabName: HackingTool
+        Hash: 2229461082
+        Nullable: false
+      - PrefabName: ToyHammer
+        Hash: 2533293698
+        Nullable: false
+      - PrefabName: FlareProjectile
+        Hash: 2833820871
+        Nullable: false
+      - PrefabName: Flaregun
+        Hash: 2974416263
+        Nullable: false
+      - PrefabName: FlaregunAmmo
+        Hash: 3017474396
+        Nullable: false
+      - PrefabName: CookieFumo
+        Hash: 3202916180
+        Nullable: false
+      - PrefabName: GnarpyPlush
+        Hash: 3365566892
+        Nullable: false
+      - PrefabName: PingMarker
+        Hash: 3410962660
+        Nullable: false
+      - PrefabName: PingTool
+        Hash: 3411841541
+        Nullable: false
+      - PrefabName: Sign
+        Hash: 3580946833
+        Nullable: false
+      - PrefabName: Boomba
+        Hash: 3666006134
+        Nullable: false
+      - PrefabName: Rug
+        Hash: 3757233212
+        Nullable: false
+      - PrefabName: CrystalRay
+        Hash: 3796756593
+        Nullable: false
+      - PrefabName: ToyHammer
+        Hash: 3813165768
+        Nullable: false
+      - PrefabName: RocketLauncher
+        Hash: 3854591296
+        Nullable: false
+      - PrefabName: Rug2
+        Hash: 3862962698
+        Nullable: false
+      - PrefabName: PouchItem
+        Hash: 4121394640
+        Nullable: false
+      - PrefabName: MaggieSpawner
+        Hash: 4143086329
+        Nullable: false
+  - ModName: LC Office
+    Prefabs:
+      - PrefabName: GlassDoorMapSpawn
+        Hash: 0
+        Nullable: false
+      - PrefabName: VendingMachine
+        Hash: 16898737
+        Nullable: false
+      - PrefabName: DoubleOfficeDoorMapModel
+        Hash: 127748539
+        Nullable: false
+      - PrefabName: GenericSoda
+        Hash: 354759008
+        Nullable: false
+      - PrefabName: GlassSlidingDoorMapModel
+        Hash: 598998382
+        Nullable: false
+      - PrefabName: PlasticDoorMapModel
+        Hash: 753554459
+        Nullable: false
+      - PrefabName: UpturnedApparatus
+        Hash: 771622132
+        Nullable: false
+      - PrefabName: ActualElevator
+        Hash: 983785542
+        Nullable: false
+      - PrefabName: Wrench
+        Hash: 1067946113
+        Nullable: false
+      - PrefabName: HarvestSoda
+        Hash: 1136180244
+        Nullable: false
+      - PrefabName: OfficeDoorMapModel
+        Hash: 1796739151
+        Nullable: false
+      - PrefabName: AltSoda
+        Hash: 1802253590
+        Nullable: false
+      - PrefabName: Toolbox
+        Hash: 1872693579
+        Nullable: false
+      - PrefabName: MontySoda
+        Hash: 2282716426
+        Nullable: false
+      - PrefabName: XuSoda
+        Hash: 2367859649
+        Nullable: false
+      - PrefabName: Laptop
+        Hash: 2792596217
+        Nullable: false
+      - PrefabName: NikkiSoda
+        Hash: 3141477442
+        Nullable: false
+      - PrefabName: WoodenOfficeDoorMapModel
+        Hash: 3191991887
+        Nullable: false
+      - PrefabName: SeichiSoda
+        Hash: 3211239959
+        Nullable: false
+      - PrefabName: WebleySoda
+        Hash: 3418431649
+        Nullable: false
+      - PrefabName: Coin
+        Hash: 3496350079
+        Nullable: false
+      - PrefabName: ElevatorStorage
+        Hash: 3621837319
+        Nullable: false
+      - PrefabName: UpturnedApparatusTurnedOff
+        Hash: 3888634379
+        Nullable: false
+      - PrefabName: ScrewDriver
+        Hash: 4070229419
+        Nullable: false
+      - PrefabName: OditySoda
+        Hash: 4078278277
+        Nullable: false
+  - ModName: JLL
+    Prefabs:
+      - PrefabName: JLL
+        Hash: 1118205963
+        Nullable: false
+      - PrefabName: JLL
+        Hash: 2744313376
+        Nullable: false
+      - PrefabName: JLL
+        Hash: 3672450371
+        Nullable: false
+  - ModName: CSync
+    Prefabs:
+      - PrefabName: ConfigSyncHolder
+        Hash: 2258435833
+        Nullable: false
+VanillaHash: 11448359007067980394
+ModHashs:
+  9815308066024813617: LethalCasino
