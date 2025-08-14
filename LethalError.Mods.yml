@@ -515,6 +515,14 @@ Mods:
       - PrefabName: PrefabNetworkManager
         Hash: 1959307416
         Nullable: false
+  - ModName: ShipWindows
+    Prefabs:
+      - PrefabName: PrefabShutterSwitch
+        Hash: 1852561165
+        Nullable: false
+      - PrefabName: PrefabShipWindowsNetworkManager
+        Hash: 3429375419
+        Nullable: false
 VanillaHash: 11448359007067980394
 ModHashs:
   9815308066024813617: LethalCasino
