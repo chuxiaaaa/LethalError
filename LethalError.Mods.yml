@@ -621,6 +621,56 @@ Mods:
       - PrefabName: DoorScrap
         Hash: 4200600649
         Nullable: false
+  - ModName: VoidLeak
+    Prefabs:
+      - PrefabName: BlueApollo
+        Hash: 121784146
+        Nullable: false
+      - PrefabName: CoroutineBarrel
+        Hash: 253011609
+        Nullable: false
+      - PrefabName: SpawnGun
+        Hash: 261722488
+        Nullable: false
+      - PrefabName: IceAxe
+        Hash: 551926637
+        Nullable: false
+      - PrefabName: Crowbar
+        Hash: 1146310282
+        Nullable: false
+      - PrefabName: BalloonGun
+        Hash: 1303942873
+        Nullable: false
+      - PrefabName: SoupCan
+        Hash: 1406663316
+        Nullable: false
+      - PrefabName: SkeletonSkull
+        Hash: 1975251700
+        Nullable: false
+      - PrefabName: DevGun
+        Hash: 2032337189
+        Nullable: false
+      - PrefabName: CrabletHeadset
+        Hash: 2118031143
+        Nullable: false
+      - PrefabName: Bottle
+        Hash: 2124490196
+        Nullable: false
+      - PrefabName: PlasticBarrel
+        Hash: 2456123961
+        Nullable: false
+      - PrefabName: MemoryLeakBarrel
+        Hash: 2646992106
+        Nullable: false
+      - PrefabName: LunarLanderToy
+        Hash: 2684294371
+        Nullable: false
+      - PrefabName: GoldApollo
+        Hash: 2854945505
+        Nullable: false
+      - PrefabName: Apollo
+        Hash: 3466143613
+        Nullable: false
 VanillaHash: 11448359007067980394
 ModHashs:
   9815308066024813617: LethalCasino
