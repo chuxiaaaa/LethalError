@@ -510,6 +510,11 @@ Mods:
       - PrefabName: ConfigSyncHolder
         Hash: 2258435833
         Nullable: false
+  - ModName: DoorBreach
+    Prefabs:
+      - PrefabName: PrefabNetworkManager
+        Hash: 1959307416
+        Nullable: false
 VanillaHash: 11448359007067980394
 ModHashs:
   9815308066024813617: LethalCasino
