@@ -211,7 +211,7 @@ namespace LethalError
                 }
                 else
                 {
-                    NetworkManager.Singleton.DisconnectClient(clientId, $"<size=14><color=red>Join Lobby Failed</color></size>\r\n\r\n<size=11>The following mods you're not installed:\r\n{string.Join(Environment.NewLine, mods)}</size>");
+                    NetworkManager.Singleton.DisconnectClient(clientId, $"<size=14><color=red>Join Lobby Failed</color></size>\r\n\r\n<size=11>The following mods you're not installed:\r\n<color=red>{string.Join(Environment.NewLine, mods)}</color></size>");
                     LethalErrorPlugin.ManualLog.LogInfo($"host install:{string.Join(",", mods)}");
                 }
                 yield break;
@@ -224,7 +224,7 @@ namespace LethalError
             else if (LethalErrorPlugin.config.ModHashs.TryGetValue(hash, out var existingReason))
             {
                 LethalErrorPlugin.ManualLog.LogInfo($"Kick for {existingReason}");
-                NetworkManager.Singleton.DisconnectClient(clientId, $"<size=14><color=red>Join Lobby Failed</color></size>\r\n\r\n<size=11>The following mods are not installed on the <color=red>host</color>:\r\n{existingReason}</size>");
+                NetworkManager.Singleton.DisconnectClient(clientId, $"<size=14><color=red>Join Lobby Failed</color></size>\r\n\r\n<size=11>The following mods are not installed on the <color=red>host</color>:\r\n<color=red>{existingReason}</color></size>");
                 yield break;
             }
             foreach (var item in LethalErrorPlugin.config.Mods)
@@ -261,13 +261,13 @@ namespace LethalError
                     {
                         LethalErrorPlugin.SaveConfig();
                         LethalErrorPlugin.ManualLog.LogInfo($"Kick for {combinationKey}");
-                        NetworkManager.Singleton.DisconnectClient(clientId, $"<size=14><color=red>Join Lobby Failed</color></size>\r\n\r\n<size=11>The following mods are not installed on the host:\r\n{combinationKey}</size>");
+                        NetworkManager.Singleton.DisconnectClient(clientId, $"<size=14><color=red>Join Lobby Failed</color></size>\r\n\r\n<size=11>The following mods are not installed on the host:\r\n<color=red>{combinationKey}</color></size>");
                         yield break;
                     }
                 }
             }
             LethalErrorPlugin.SaveConfig();
-            NetworkManager.Singleton.DisconnectClient(clientId, "<size=14><color=red>Join Lobby Failed</color></size>\r\n<size=11>Your installed mods don't match the server</size>");
+            NetworkManager.Singleton.DisconnectClient(clientId, "<size=14><color=red>Join Lobby Failed</color></size>\r\n\r\n<size=11>Your installed mods don't match the server</size>");
         }
 
         [HarmonyPrefix]
