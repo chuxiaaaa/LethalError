@@ -523,6 +523,104 @@ Mods:
       - PrefabName: PrefabShipWindowsNetworkManager
         Hash: 3429375419
         Nullable: false
+  - ModName: TestAccountVariety
+    Prefabs:
+      - PrefabName: PrefabThrowableCube
+        Hash: 409451730
+        Nullable: false
+      - PrefabName: PrefabPyramid
+        Hash: 551772654
+        Nullable: false
+      - PrefabName: PrefabTree
+        Hash: 682699159
+        Nullable: false
+      - PrefabName: CageTrap
+        Hash: 749816525
+        Nullable: false
+      - PrefabName: DicePrefab
+        Hash: 871368295
+        Nullable: false
+      - PrefabName: PrefabLightSwitch
+        Hash: 934464368
+        Nullable: false
+      - PrefabName: PrefabBattery
+        Hash: 947274758
+        Nullable: false
+      - PrefabName: PrefabEva
+        Hash: 1000493550
+        Nullable: false
+      - PrefabName: PrefabMonitor
+        Hash: 1080432659
+        Nullable: false
+      - PrefabName: YippeScrap
+        Hash: 1165779332
+        Nullable: false
+      - PrefabName: PrefabGingerbreadMan
+        Hash: 1470965364
+        Nullable: false
+      - PrefabName: PrefabTelepad
+        Hash: 1492580084
+        Nullable: false
+      - PrefabName: PrefabColoredCube
+        Hash: 1835582530
+        Nullable: false
+      - PrefabName: PrefabCorn
+        Hash: 1840671256
+        Nullable: false
+      - PrefabName: Yeetmine
+        Hash: 1978148937
+        Nullable: false
+      - PrefabName: LunxPainting
+        Hash: 2169699016
+        Nullable: false
+      - PrefabName: PrefabPeepoCan
+        Hash: 2820771918
+        Nullable: false
+      - PrefabName: StoneUnlockable
+        Hash: 2846620145
+        Nullable: false
+      - PrefabName: PrefabBomb
+        Hash: 2924088298
+        Nullable: false
+      - PrefabName: ToyCar
+        Hash: 2946579443
+        Nullable: false
+      - PrefabName: Pikachu
+        Hash: 2964789379
+        Nullable: false
+      - PrefabName: PrefabAcidSpitter
+        Hash: 2972234574
+        Nullable: false
+      - PrefabName: ShipToy
+        Hash: 3087995924
+        Nullable: false
+      - PrefabName: PrefabChristmasRadio
+        Hash: 3094923118
+        Nullable: false
+      - PrefabName: GiftMimic
+        Hash: 3218150000
+        Nullable: false
+      - PrefabName: PrefabAlexandriaDoll
+        Hash: 3261047672
+        Nullable: false
+      - PrefabName: PrefabEvilYippe
+        Hash: 3779484830
+        Nullable: false
+      - PrefabName: CleaningDroneToy
+        Hash: 3873577668
+        Nullable: false
+      - PrefabName: PrefabHyperCube
+        Hash: 3933395614
+        Nullable: false
+      - PrefabName: PrefabRocket
+        Hash: 4047545925
+        Nullable: false
+      - PrefabName: PrefabShibaPlush
+        Hash: 4099275594
+        Nullable: false
+      - PrefabName: DoorScrap
+        Hash: 4200600649
+        Nullable: false
 VanillaHash: 11448359007067980394
 ModHashs:
   9815308066024813617: LethalCasino
