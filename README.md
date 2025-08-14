@@ -80,3 +80,10 @@ If you open this file, you will see that it contains YAML-formatted content. Whe
 How to identify an unsupported mod? Make sure you have only that mod installed. Then, copy the ModName and Prefabs from the above file into LethalError.Mods.yml. (If there are dependencies, you need to manually remove the prefabs of the dependencies.)
 
 如何对一个未支持的模组进行识别？就是确保你只安装了该模组。将上诉文件的`ModName`以及`Prefabs`复制到`LethalError.Mods.yml`即可（如果有前置，你需要手动删掉前置的prefabs）
+
+## Credits
+
+Testers: 
+- yun
+- 柒小鸭yz
+- Aueser
