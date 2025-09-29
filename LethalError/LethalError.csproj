@@ -30,6 +30,9 @@
     <Reference Include="BepInEx.Harmony">
       <HintPath>F:\LethalCompany\BepInEx.Harmony.dll</HintPath>
     </Reference>
+    <Reference Include="Newtonsoft.Json">
+      <HintPath>F:\LethalCompany\Newtonsoft.Json.dll</HintPath>
+    </Reference>
     <Reference Include="Unity.Netcode.Runtime" Publicize="true">
       <HintPath>F:\LethalCompany\Unity.Netcode.Runtime.dll</HintPath>
     </Reference>
@@ -39,6 +42,21 @@
     <Reference Include="UnityEngine.CoreModule">
       <HintPath>F:\LethalCompany\UnityEngine.CoreModule.dll</HintPath>
     </Reference>
+  </ItemGroup>
+
+  <ItemGroup>
+    <Compile Update="Properties\Resources.Designer.cs">
+      <DesignTime>True</DesignTime>
+      <AutoGen>True</AutoGen>
+      <DependentUpon>Resources.resx</DependentUpon>
+    </Compile>
+  </ItemGroup>
+
+  <ItemGroup>
+    <EmbeddedResource Update="Properties\Resources.resx">
+      <Generator>PublicResXFileCodeGenerator</Generator>
+      <LastGenOutput>Resources.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
   </ItemGroup>
 
 </Project>

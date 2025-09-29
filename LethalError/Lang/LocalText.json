@@ -1,0 +1,22 @@
+{
+  "ServerModded": [
+    "<size=14><color=red>Join Lobby Failed</color></size>\r\n\r\n<size=11>This lobby is modded, but you're vanilla.</size>",
+    "<size=14><color=red>加入房间失败</color></size>\r\n\r\n<size=11>当前房间已启用模组(但你是原版游戏)</size>"
+  ],
+  "ClientModded": [
+    "<size=14><color=red>Join Lobby Failed</color></size>\r\n\r\n<size=11>You're modded, But lobby is vanilla.</size>",
+    "<size=14><color=red>加入房间失败</color></size>\r\n\r\n<size=11>当前房间是原版游戏，但你启用了非原版模组</size>"
+  ],
+  "ModMismatch": [
+    "<size=14><color=red>Join Lobby Failed</color></size>\r\n\r\n<size=11>Your installed mods don't match the server.</size>",
+    "<size=14><color=red>加入房间失败</color></size>\r\n\r\n<size=11>你安装的模组与主机不匹配</size>"
+  ],
+  "ServerNotInstall": [
+    "<size=14><color=red>Join Lobby Failed</color></size>\r\n\r\n<size=11>The following mods are not installed on the <color=red>host</color>:\r\n<color=red>{0}</color></size>",
+    "<size=14><color=red>加入房间失败</color></size>\r\n\r\n<size=11><color=red>主机</color>未安装以下模组:\r\n<color=red>{0}</color></size>"
+  ],
+  "ClientNotInstall": [
+    "<size=14><color=red>Join Lobby Failed</color></size>\r\n\r\n<size=11>You are missing the following mods:\r\n<color=red>{0}</color></size>",
+    "<size=14><color=red>加入房间失败</color></size>\r\n\r\n<size=11>你缺少以下模组:\r\n<color=red>{0}</color></size>"
+  ]
+}

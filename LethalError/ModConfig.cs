@@ -10,7 +10,7 @@ namespace LethalError
     {
         public List<ModConfig> Mods { get; set; } = new List<ModConfig>();
 
-        public ulong VanillaHash { get; set; }
+        public ulong? VanillaHash { get; set; }
 
         public Dictionary<ulong, string> ModHashs { get; set; } = new Dictionary<ulong, string>();
     }
