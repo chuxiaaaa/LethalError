@@ -10,38 +10,14 @@
     <PathMap>$([System.IO.Path]::GetFullPath('$(MSBuildThisFileDirectory)'))=./</PathMap>
 </PropertyGroup>
   <ItemGroup>
-    <PackageReference Include="BepInEx.AssemblyPublicizer.MSBuild" Version="0.4.3">
-      <PrivateAssets>all</PrivateAssets>
-      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
-    </PackageReference>
+	  <PackageReference Include="BepInEx.AssemblyPublicizer.MSBuild" Version="0.4.3">
+		  <PrivateAssets>all</PrivateAssets>
+		  <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+	  </PackageReference>
+	  <PackageReference Include="BepInEx.Analyzers" PrivateAssets="all" Version="1.*" />
+	  <PackageReference Include="BepInEx.Core" Version="5.4.*" />
+    <PackageReference Include="LethalCompany.GameLibs.Steam" Version="73.0.0-ngd.0" Publicize="true"/>
     <PackageReference Include="YamlDotNet" Version="16.3.0" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <Reference Include="0Harmony">
-      <HintPath>F:\LethalCompany\0Harmony.dll</HintPath>
-    </Reference>
-    <Reference Include="Assembly-CSharp" Publicize="true">
-      <HintPath>F:\LethalCompany\Assembly-CSharp.dll</HintPath>
-    </Reference>
-    <Reference Include="BepInEx">
-      <HintPath>F:\LethalCompany\BepInEx.dll</HintPath>
-    </Reference>
-    <Reference Include="BepInEx.Harmony">
-      <HintPath>F:\LethalCompany\BepInEx.Harmony.dll</HintPath>
-    </Reference>
-    <Reference Include="Newtonsoft.Json">
-      <HintPath>F:\LethalCompany\Newtonsoft.Json.dll</HintPath>
-    </Reference>
-    <Reference Include="Unity.Netcode.Runtime" Publicize="true">
-      <HintPath>F:\LethalCompany\Unity.Netcode.Runtime.dll</HintPath>
-    </Reference>
-    <Reference Include="UnityEngine">
-      <HintPath>F:\LethalCompany\UnityEngine.dll</HintPath>
-    </Reference>
-    <Reference Include="UnityEngine.CoreModule">
-      <HintPath>F:\LethalCompany\UnityEngine.CoreModule.dll</HintPath>
-    </Reference>
   </ItemGroup>
 
   <ItemGroup>

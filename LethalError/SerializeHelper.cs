@@ -23,8 +23,9 @@ namespace LethalError
                 var builder = new DeserializerBuilder().Build();
                 return builder.Deserialize<T>(input);
             }
-            catch (Exception)
+            catch (Exception ex)
             {
+                LethalErrorPlugin.ManualLog.LogError(ex.ToString());
                 return default;
             }
         }

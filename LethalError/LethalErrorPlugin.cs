@@ -8,6 +8,8 @@ using HarmonyLib;
 
 using LethalError.Lang;
 
+using Steamworks.Ugc;
+
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -15,9 +17,11 @@ using System.IO;
 using System.Linq;
 using System.Linq.Expressions;
 using System.Reflection;
+using System.Reflection.Emit;
 using System.Text;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
+using System.Xml.Linq;
 
 using Unity.Collections;
 using Unity.Netcode;
@@ -83,6 +87,7 @@ namespace LethalError
             ManualLog = Logger;
             LoadConfig();
             _harmony.PatchAll(typeof(Patches));
+            _harmony.PatchAll(typeof(TimeoutPatches));
 
         }
 
@@ -117,12 +122,8 @@ namespace LethalError
             {
                 config.Mods = new List<ModConfig>();
             }
-            if (config.ModHashs == null)
-            {
-                config.ModHashs = new Dictionary<ulong, string>();
-            }
             File.WriteAllText(configPath, SerializeHelper.YamlSerialize(config));
-            ManualLog.LogInfo($"Save Mods Success({config.Mods.Count}|{config.VanillaHash})");
+            ManualLog.LogInfo($"Save Mods Success({config.Mods.Count}");
         }
 
         public static void LoadConfig()
@@ -147,25 +148,104 @@ namespace LethalError
             {
                 config.Mods = new List<ModConfig>();
             }
-            if (config.ModHashs == null)
-            {
-                config.ModHashs = new Dictionary<ulong, string>();
-            }
             SetLanguage();
-            ManualLog.LogInfo($"Load Mods Success({config.Mods.Count}|{config.VanillaHash})");
+            ManualLog.LogInfo($"Load Mods Success({config.Mods.Count})");
         }
     }
 
+
+    public static class TimeoutPatches
+    {
+        static MethodBase TargetMethod()
+        {
+            var stateMachineType = AccessTools.Inner(typeof(NetworkConnectionManager), "<ApprovalTimeout>d__56");
+            return AccessTools.Method(stateMachineType, "MoveNext");
+        }
+
+        [HarmonyPatch]
+        class ApprovalTimeoutPatch
+        {
+            static MethodBase TargetMethod()
+            {
+                var type = AccessTools.Inner(typeof(NetworkConnectionManager), "<ApprovalTimeout>d__56");
+                return AccessTools.Method(type, "MoveNext");
+            }
+
+            static IEnumerable<CodeInstruction> Transpiler(IEnumerable<CodeInstruction> instructions)
+            {
+                var list = new List<CodeInstruction>(instructions);
+
+                var disconnectMethod = AccessTools.Method(
+                    typeof(NetworkConnectionManager),
+                    "DisconnectClient",
+                    new Type[] { typeof(ulong), typeof(string) });
+
+                for (int i = 0; i < list.Count; i++)
+                {
+                    if (list[i].Calls(disconnectMethod))
+                    {
+                        // 在 DisconnectClient 前插入
+                        list.InsertRange(i, new[]
+                        {
+                            new CodeInstruction(OpCodes.Ldarg_0), // stateMachine
+                            new CodeInstruction(OpCodes.Call, AccessTools.Method(typeof(ApprovalTimeoutPatch), nameof(OnTimeout)))
+                        });
+
+                        break;
+                    }
+                }
+
+                return list;
+            }
+
+            static void OnTimeout(object stateMachine)
+            {
+                ulong clientId = (ulong)AccessTools.Field(stateMachine.GetType(), "clientId").GetValue(stateMachine);
+
+                if (!Patches.TimeoutClients.Contains(clientId))
+                {
+                    LethalErrorPlugin.ManualLog.LogInfo($"客户端连接审批超时: {clientId}");
+                    Patches.TimeoutClients.Add(clientId);
+                }
+            }
+        }
+    }
 
 
     public class Patches
     {
 
-      
+        [HarmonyPatch(typeof(NetworkManager), "SetSingleton")]
+        [HarmonyWrapSafe]
+        [HarmonyPostfix]
+        [HarmonyPriority(Priority.VeryLow)]
+        public static void SetSingleton(NetworkManager __instance)
+        {
+            ClientHash = new Dictionary<ulong, ulong>();
+            TimeoutClients = new HashSet<ulong>();
+            DelayedClients = new HashSet<ulong>();
+        }
 
+        [HarmonyPostfix]
+        [HarmonyPatch(typeof(NetworkManager), nameof(NetworkManager.Initialize))]
+        private static void AfterInitialize()
+        {
+            NetworkManager.Singleton.CustomMessagingManager.RegisterNamedMessageHandler(
+                  MsgPrefabSync,
+                  OnReceivePrefabList
+              );
+        }
+
+        [HarmonyPostfix]
+        [HarmonyPatch(typeof(GameNetworkManager), "SetInstanceValuesBackToDefault")]
+        public static void SetInstanceValuesBackToDefault()
+        {
+            if (NetworkManager.Singleton == null || NetworkManager.Singleton.CustomMessagingManager == null)
+                return;
+            NetworkManager.Singleton.CustomMessagingManager.UnregisterNamedMessageHandler(MsgPrefabSync);
+        }
 
         private static Dictionary<ulong, ulong> ClientHash { get; set; } = new Dictionary<ulong, ulong>();
-        private static Dictionary<ulong, bool> ClientDeserialize { get; set; } = new Dictionary<ulong, bool>();
 
         [HarmonyPatch(typeof(ConnectionRequestMessage), "Deserialize")]
         [HarmonyWrapSafe]
@@ -229,8 +309,11 @@ namespace LethalError
             }
         }
 
-        private static readonly HashSet<ulong> delayedClients = new HashSet<ulong>();
+        private static HashSet<ulong> DelayedClients = new HashSet<ulong>();
+        public static HashSet<ulong> TimeoutClients = new HashSet<ulong>();
 
+
+        
 
         [HarmonyPrefix]
         [HarmonyPatch(typeof(NetworkConnectionManager), "DisconnectClient")]
@@ -240,20 +323,34 @@ namespace LethalError
             if (StartOfRound.Instance != null && StartOfRound.Instance.IsHost)
             {
                 LethalErrorPlugin.ManualLog.LogInfo($"DisconnectClient:{clientId} reason:{reason}");
-                if (!delayedClients.Contains(clientId) && string.IsNullOrWhiteSpace(reason))
+                if (!DelayedClients.Contains(clientId) && string.IsNullOrWhiteSpace(reason))
                 {
                     LethalErrorPlugin.ManualLog.LogInfo($"Delay");
                     StartOfRound.Instance.StartCoroutine(DelayedDisconnect(clientId));
-                    delayedClients.Add(clientId);
+                    DelayedClients.Add(clientId);
                     return false;
                 }
             }
             return true;
         }
 
+        private const string MsgPrefabSync = "LethalError_PrefabSync";
+
+
+        public struct PrefabData
+        {
+            public uint hash;
+            public string prefabName;
+        }
+
         private static IEnumerator DelayedDisconnect(ulong clientId)
         {
             yield return new WaitForSeconds(0.1f);
+            if (TimeoutClients.Contains(clientId))
+            {
+                NetworkManager.Singleton.DisconnectClient(clientId, $"{$"<size=0>LethalError|Timeout</size>"}{LocalText.GetText("Timeout")}");
+                yield break;
+            }
             if (!ClientHash.TryGetValue(clientId, out var hash))
             {
                 NetworkManager.Singleton.DisconnectClient(clientId, null);
@@ -262,112 +359,228 @@ namespace LethalError
             var networkHash = NetworkManager.Singleton.NetworkConfig.GetConfig();
             if (hash == networkHash)
             {
-                NetworkManager.Singleton.DisconnectClient(clientId, null);
+                NetworkManager.Singleton.DisconnectClient(clientId, "");
                 yield break;
             }
-            else if (hash == LethalErrorPlugin.config.VanillaHash || hash == LethalErrorPlugin.config.MoreCompanyHash)
+            else
             {
-                List<string> mods = GetInstallMod();
-                if (mods.Count == 0)
-                {
-                    LethalErrorPlugin.ManualLog.LogInfo($"Kick for ServerModded|Server:{networkHash}|Client:{hash}");
-                    NetworkManager.Singleton.DisconnectClient(clientId, $"{"<size=0>LethalError|ServerModded</size>"}{LocalText.GetText("ServerModded")}");
-                }
-                else
-                {
-                    var modsStr = string.Join(Environment.NewLine, mods);
-                    LethalErrorPlugin.ManualLog.LogInfo($"Kick for ClientNotInstall|Server:{networkHash}|Client:{hash}|mods:{modsStr}");
-                    NetworkManager.Singleton.DisconnectClient(clientId, $"{$"<size=0>LethalError|ClientNotInstall|{modsStr}</size>"}{LocalText.GetText("ClientNotInstall",modsStr)}");
-                    //NetworkManager.Singleton.DisconnectClient(clientId, $"<size=14><color=red>Join Lobby Failed</color></size>\r\n\r\n<size=11>You are missing the following mods:\r\n<color=red>{}</color></size>");
-                }
-                yield break;
+                var prefabData = NetworkManager.Singleton.NetworkConfig.Prefabs.NetworkPrefabOverrideLinks
+                  .Select(p => new PrefabData()
+                  {
+                      hash = p.Key,
+                      prefabName = p.Value.Prefab.name
+                  }).ToList();
+
+                SendPrefabList(clientId, prefabData);
+                yield return new WaitForSeconds(1f);
+                LethalErrorPlugin.ManualLog.LogInfo(
+                    $"Kick for ModMismatch|Server:{networkHash}|Client:{hash}");
+                NetworkManager.Singleton.DisconnectClient(
+                    clientId,
+                    $"<size=0>LethalError|ModMismatch</size>{LocalText.GetText("ModMismatch")}"
+                );
             }
-            else if (LethalErrorPlugin.config.ModHashs.TryGetValue(hash, out var existingReason))
-            {
-                LethalErrorPlugin.ManualLog.LogInfo($"Kick for ServerNotInstall|Server:{networkHash}|Client:{hash}|mods:{existingReason}");
-                NetworkManager.Singleton.DisconnectClient(clientId, $"{$"<size=0>LethalError|ServerNotInstall|{existingReason}</size>"}{LocalText.GetText("ServerNotInstall", existingReason)}");
-                //NetworkManager.Singleton.DisconnectClient(clientId, LocalText.GetText("ServerNotInstall", string.Join(Environment.NewLine, existingReason)));
-                yield break;
-            }
-            foreach (var item in LethalErrorPlugin.config.Mods)
-            {
-                var nullablePrefabs = item.Prefabs.Where(p => p.Nullable).ToList();
-                var nonNullablePrefabs = item.Prefabs.Where(p => !p.Nullable).Select(p => p.Hash).ToList();
-
-                int n = nullablePrefabs.Count;
-                int combinations = 1 << n;
-
-                for (int i = 0; i < combinations; i++)
-                {
-                    var prefabNames = new List<string>();
-                    for (int bit = 0; bit < n; bit++)
-                        if ((i & (1 << bit)) != 0)
-                            prefabNames.Add(nullablePrefabs[bit].PrefabName);
-
-                    string combinationKey = prefabNames.Count > 0
-                        ? $"{item.ModName} [{string.Join(", ", prefabNames)}]"
-                        : item.ModName;
-
-                    if (LethalErrorPlugin.config.ModHashs.Values.Contains(combinationKey))
-                        continue;
-
-                    var prefabsToInclude = new List<uint>(nonNullablePrefabs);
-                    for (int bit = 0; bit < n; bit++)
-                        if ((i & (1 << bit)) != 0)
-                            prefabsToInclude.Add(nullablePrefabs[bit].Hash);
-
-                    ulong calHash = GetConfig(prefabsToInclude);
-                    LethalErrorPlugin.config.ModHashs.Add(calHash, combinationKey);
-                    //LethalErrorPlugin.ManualLog.LogInfo($"calHash:{calHash}|combinationKey:{combinationKey}|{string.Join(",", prefabsToInclude)}");
-                    if (calHash == hash)
-                    {
-                        LethalErrorPlugin.SaveConfig();
-                        LethalErrorPlugin.ManualLog.LogInfo($"Kick for ServerNotInstall|Server:{networkHash}|Client:{hash}|mods:{combinationKey}");
-                        NetworkManager.Singleton.DisconnectClient(clientId, $"{$"<size=0>LethalError|ServerNotInstall|{combinationKey}</size>"}{LocalText.GetText("ServerNotInstall", combinationKey)}");
-                        //NetworkManager.Singleton.DisconnectClient(clientId, LocalText.GetText("ServerNotInstall", string.Join(Environment.NewLine, combinationKey)));
-                        //NetworkManager.Singleton.DisconnectClient(clientId, $"<size=14><color=red>Join Lobby Failed</color></size>\r\n\r\n<size=11>The following mods are not installed on the host:\r\n<color=red>{combinationKey}</color></size>");
-                        yield break;
-                    }
-                }
-            }
-            if (networkHash == LethalErrorPlugin.config.VanillaHash || networkHash == LethalErrorPlugin.config.MoreCompanyHash)
-            {
-                LethalErrorPlugin.ManualLog.LogInfo($"Kick for ClientModded|Server:{networkHash}|Client:{hash}");
-                NetworkManager.Singleton.DisconnectClient(clientId, $"{$"<size=0>LethalError|ClientModded</size>"}{LocalText.GetText("ClientModded")}");
-                //NetworkManager.Singleton.DisconnectClient(clientId, LocalText.GetText("ClientModded"));
-                yield break;
-            }
-            LethalErrorPlugin.SaveConfig();
-            LethalErrorPlugin.ManualLog.LogInfo($"Kick for Modmismatch|Server:{networkHash}|Client:{hash}");
-            NetworkManager.Singleton.DisconnectClient(clientId, $"{$"<size=0>LethalError|ModMismatch</size>"}{LocalText.GetText("ModMismatch")}");
-            //NetworkManager.Singleton.DisconnectClient(clientId, LocalText.GetText("ModMismatch"));
         }
 
-        private static List<string> GetInstallMod()
+        private const int SAFE_PAYLOAD_LIMIT = 900; // 单包安全负载上限
+
+        // --- 接收端缓存结构 ---
+        // 用于暂存未完成的批次数据
+        // Key: senderClientId (防止不同客户端的数据混在一起)
+        // Value: 重组上下文对象
+        private static readonly Dictionary<ulong, ReassemblyContext> s_reassemblyCache = new Dictionary<ulong, ReassemblyContext>();
+
+        /// <summary>
+        /// 发送预制体列表（带批次信息的自动分包）
+        /// </summary>
+        public static void SendPrefabList(ulong clientId, List<PrefabData> list)
         {
-            List<string> mods = new List<string>();
-            var registeredPrefabKeys = NetworkManager.Singleton.NetworkConfig.Prefabs.NetworkPrefabOverrideLinks.Select(p => p.Key).ToHashSet();
-            foreach (var mod in LethalErrorPlugin.config.Mods)
-            {
-                bool modInstalled = true;
+            if (list == null || list.Count == 0) return;
 
-                foreach (var prefab in mod.Prefabs)
+          
+            int totalBatches = 0;
+            int index = 0;
+
+            // 临时计算总批次数
+            while (index < list.Count)
+            {
+                int currentBatchCount = 0;
+                int currentSizeEstimate = 0;
+                int sizeForHeaders = 8; // 预留：Count(2) + BatchIndex(2) + TotalBatches(2) + 余量
+
+                while (index + currentBatchCount < list.Count)
                 {
-                    if (!prefab.Nullable && !registeredPrefabKeys.Contains(prefab.Hash))
+                    var item = list[index + currentBatchCount];
+                    int itemSize;
+                    using (var tempWriter = new FastBufferWriter(1024, Allocator.Temp, 4096))
                     {
-                        modInstalled = false;
-                        break;
+                        BytePacker.WriteValueBitPacked(tempWriter, item.hash);
+                        BytePacker.WriteValuePacked(tempWriter, item.prefabName);
+                        itemSize = tempWriter.Position;
                     }
+
+                    if (currentBatchCount > 0 && (currentSizeEstimate + sizeForHeaders + itemSize > SAFE_PAYLOAD_LIMIT))
+                        break;
+
+                    currentSizeEstimate += itemSize;
+                    currentBatchCount++;
                 }
-                if (modInstalled)
+
+                if (currentBatchCount == 0) currentBatchCount = 1;
+
+                index += currentBatchCount;
+                totalBatches++;
+            }
+
+            // 第二步：正式发送数据
+            index = 0;
+            int currentBatchIndex = 0;
+
+            while (index < list.Count)
+            {
+                int currentBatchCount = 0;
+                int currentSizeEstimate = 0;
+                int sizeForHeaders = 8;
+
+                // 再次计算当前包能装多少（逻辑同上）
+                while (index + currentBatchCount < list.Count)
                 {
-                    mods.Add(mod.ModName);
+                    var item = list[index + currentBatchCount];
+                    int itemSize;
+                    using (var tempWriter = new FastBufferWriter(1024, Allocator.Temp, 4096))
+                    {
+                        BytePacker.WriteValueBitPacked(tempWriter, item.hash);
+                        BytePacker.WriteValuePacked(tempWriter, item.prefabName);
+                        itemSize = tempWriter.Position;
+                    }
+
+                    if (currentBatchCount > 0 && (currentSizeEstimate + sizeForHeaders + itemSize > SAFE_PAYLOAD_LIMIT))
+                        break;
+
+                    currentSizeEstimate += itemSize;
+                    currentBatchCount++;
+                }
+
+                if (currentBatchCount == 0) currentBatchCount = 1;
+
+                // 创建 Writer
+                using (var writer = new FastBufferWriter(currentSizeEstimate + 20, Allocator.Temp, 1024 * 100))
+                {
+                    BytePacker.WriteValueBitPacked(writer, currentBatchCount);
+                    BytePacker.WriteValueBitPacked(writer, currentBatchIndex);
+                    BytePacker.WriteValueBitPacked(writer, totalBatches);
+
+                    for (int j = 0; j < currentBatchCount; j++)
+                    {
+                        var item = list[index + j];
+                        BytePacker.WriteValueBitPacked(writer, item.hash);
+                        BytePacker.WriteValuePacked(writer, item.prefabName);
+                    }
+
+                    NetworkManager.Singleton.CustomMessagingManager.SendNamedMessage(
+                        MsgPrefabSync,
+                        clientId,
+                        writer,
+                        NetworkDelivery.Reliable
+                    );
+                }
+
+                index += currentBatchCount;
+                currentBatchIndex++;
+            }
+        }
+
+        /// <summary>
+        /// 接收预制体列表（带重组逻辑）
+        /// </summary>
+        public static void OnReceivePrefabList(ulong senderClientId, FastBufferReader reader)
+        {
+            // 1. 读取头部信息
+            ByteUnpacker.ReadValueBitPacked(reader, out int count);
+            ByteUnpacker.ReadValueBitPacked(reader, out int batchIndex);
+            ByteUnpacker.ReadValueBitPacked(reader, out int totalBatches);
+            // 2. 获取或创建该客户端的重组上下文
+            if (!s_reassemblyCache.TryGetValue(senderClientId, out var context))
+            {
+                context = new ReassemblyContext(totalBatches);
+                s_reassemblyCache[senderClientId] = context;
+            }
+
+            // 如果总批次数量发生变化（例如发送端数据变了，但旧缓存还在），重置上下文
+            if (context.TotalBatches != totalBatches)
+            {
+                context.Reset(totalBatches);
+            }
+
+            // 3. 读取当前批次的数据
+            var batchList = new List<(uint hash, string name)>(count);
+            for (int i = 0; i < count; i++)
+            {
+                ByteUnpacker.ReadValueBitPacked(reader, out uint hash);
+                ByteUnpacker.ReadValuePacked(reader, out string name);
+                batchList.Add((hash, name));
+            }
+
+            // 4. 存入缓存
+            context.StoreBatch(batchIndex, batchList);
+
+            // 5. 检查是否收齐
+            if (context.IsComplete())
+            {
+                // 合并所有批次数据
+                var finalList = new List<(uint hash, string name)>();
+                foreach (var batch in context.Batches)
+                {
+                    if (batch != null) finalList.AddRange(batch);
+                }
+
+                // 统一处理
+                ClientPrefabDiff.Process(finalList);
+
+                // 清理缓存
+                s_reassemblyCache.Remove(senderClientId);
+            }
+        }
+
+        // --- 辅助类：用于管理重组状态 ---
+        private class ReassemblyContext
+        {
+            public int TotalBatches { get; private set; }
+            public List<(uint hash, string name)>[] Batches { get; private set; }
+            private int _receivedCount;
+
+            public ReassemblyContext(int totalBatches)
+            {
+                Reset(totalBatches);
+            }
+
+            public void Reset(int totalBatches)
+            {
+                TotalBatches = totalBatches;
+                Batches = new List<(uint hash, string name)>[totalBatches];
+                _receivedCount = 0;
+            }
+
+            public void StoreBatch(int index, List<(uint hash, string name)> data)
+            {
+                if (index >= 0 && index < TotalBatches)
+                {
+                    // 防止重复接收同一批次覆盖数据（虽然 Reliable 模式下很少见）
+                    if (Batches[index] == null)
+                    {
+                        Batches[index] = data;
+                        _receivedCount++;
+                    }
                 }
             }
 
-            return mods;
+            public bool IsComplete()
+            {
+                return _receivedCount == TotalBatches;
+            }
         }
 
+ 
         [HarmonyPrefix]
         [HarmonyPatch(typeof(MenuManager), "DisplayMenuNotification")]
         [HarmonyWrapSafe]

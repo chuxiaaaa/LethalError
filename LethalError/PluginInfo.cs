@@ -12,6 +12,6 @@ namespace LethalError
 
         public const string PLUGIN_NAME = "LethalError";
 
-        public const string PLUGIN_VERSION = "1.0.3";
+        public const string PLUGIN_VERSION = "1.0.4";
     }
 }

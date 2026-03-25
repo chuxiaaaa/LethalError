@@ -11,12 +11,24 @@
     "<size=14><color=red>Join Lobby Failed</color></size>\r\n\r\n<size=11>Your installed mods don't match the server.</size>",
     "<size=14><color=red>加入房间失败</color></size>\r\n\r\n<size=11>你安装的模组与主机不匹配</size>"
   ],
+  "ModMismatch2": [
+    "Mods mismatch detected!\nThe following mods Missing or broken on Host:\n{0}\n\nYou're Missing or broken:\n{1}",
+    "模组不匹配！房主以下模组 缺失 或 损坏:\n{0}\n\n你以下模组 缺失 或 损坏:\n{1}"
+  ],
   "ServerNotInstall": [
     "<size=14><color=red>Join Lobby Failed</color></size>\r\n\r\n<size=11>The following mods are not installed on the <color=red>host</color>:\r\n<color=red>{0}</color></size>",
     "<size=14><color=red>加入房间失败</color></size>\r\n\r\n<size=11><color=red>主机</color>未安装以下模组:\r\n<color=red>{0}</color></size>"
   ],
   "ClientNotInstall": [
-    "<size=14><color=red>Join Lobby Failed</color></size>\r\n\r\n<size=11>You are missing the following mods:\r\n<color=red>{0}</color></size>",
+    "<size=14><color=red>Join Lobby Failed</color></size>\r\n\r\n<size=11>Required mods are missing or corrupted:\r\n<color=red>{0}</color></size>",
     "<size=14><color=red>加入房间失败</color></size>\r\n\r\n<size=11>你缺少以下模组:\r\n<color=red>{0}</color></size>"
+  ],
+  "Timeout": [
+    "<size=14><color=red>Join Lobby Failed</color></size>\r\n\r\n<size=11>Connection to host timed out. Please retry or check your network.</size>",
+    "<size=14><color=red>加入房间失败</color></size>\r\n\r\n<size=11>连接房主超时，请重试或检查网络。</size>"
+  ],
+  "NoReason": [
+    "<size=14><color=red>Join Lobby Failed</color></size>\r\n\r\n<size=11>Server Disconnect by No Reason.</size>",
+    "<size=14><color=red>加入房间失败</color></size>\r\n\r\n<size=11>服务器断开连接。</size>"
   ]
 }
