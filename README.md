@@ -7,7 +7,8 @@
 
 This mod will remove error prompts and provide more detailed information.
 
-<img width="1376" height="544" alt="image" src="https://github.com/user-attachments/assets/6a539878-58fd-422d-ac22-7a7bcdbd3647" />
+<img width="2008" height="1101" alt="image" src="https://github.com/user-attachments/assets/93c26c36-7e32-44e3-a336-6108cdc731b2" />
+
 
 ## Support 支持
 
